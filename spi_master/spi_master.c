@@ -20,7 +20,6 @@
 #include "spi_master.h"
 
 
-#if 1
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
@@ -40,42 +39,8 @@ int spi_master_write(struct device * spi,
 
     return spi_write(spi, spi_cfg, &tx);
 }
-#else
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*---------------------------------------------------------------------------*/
-int spi_master_write(struct device * spi, 
-                     struct spi_config * spi_cfg,
-                     u16_t * data)
-{
-    u8_t buffer_tx[1] = { 0x55 };
-
-    const struct spi_buf tx_buf[2] = {
-        {
-            .buf = buffer_tx,
-            .len = 1,
-        },
-        {
-            .buf = data,
-            .len = 2, //sizeof(*data),
-        }
-    };
-    const struct spi_buf_set tx = {
-        .buffers = tx_buf,
-        .count = 2
-    };
-
-    if (spi_write(spi, spi_cfg, &tx)) {
-        printk("write error\n");
-        return -EIO;
-    }
-
-    return 0;
-}
-#endif
 
 
-#if 1
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
@@ -95,48 +60,6 @@ int spi_master_read(struct device * spi,
 
     return spi_read(spi, spi_cfg, &rx);
 }
-#else
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*---------------------------------------------------------------------------*/
-int spi_master_read(struct device * spi, 
-                    struct spi_config * spi_cfg,
-                    u16_t * data)
-{
-    u8_t buffer_tx[2] = { 0xAA, 0x00 };
-
-    const struct spi_buf tx_buf = {
-        .buf = &buffer_tx,
-        .len = 2,
-    };
-    const struct spi_buf_set tx = {
-        .buffers = &tx_buf,
-        .count = 1
-    };
-
-    const struct spi_buf rx_buf[2] = {
-        {
-            .buf = NULL,
-            .len = 1,
-        },
-        {
-            .buf = data,
-            .len = 2,    //sizeof(*data),
-        }
-    };
-    const struct spi_buf_set rx = {
-        .buffers = rx_buf,
-        .count = 2
-    };
-
-    if (spi_transceive(spi, spi_cfg, &tx, &rx)) {
-        printk("read error\n");
-        return -EIO;
-    }
-
-    return 0;
-}
-#endif
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -208,13 +131,11 @@ void spi_master_init(void)
 
         printk("Sent: 0x%02X\n", tx_data);
 
-#if 1
         spi_master_read(spi, &spi_cfg, &rx_data);
 
         printk("Received: 0x%02X\n", rx_data);
 
         printk("Response is %s\n",  (rx_data == 0x5678) ? "correct" : "incorrect");
-#endif
 
         k_sleep(K_SECONDS(2));
     }
