@@ -7,9 +7,9 @@
 &spi0 {
 	compatible = "nordic,nrf-spis";
 	status = "okay";
-	sck-pin  = <18>;
-	mosi-pin = <17>;
-	miso-pin = <16>;
-	csn-pin  = <15>;
+	sck-pin  = <13>;
+	mosi-pin = <12>;
+	miso-pin = <11>;
+	csn-pin  = <14>;
 	def-char = <0xFF>;
 };

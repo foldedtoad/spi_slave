@@ -109,14 +109,12 @@ void spi_slave_init(void)
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_LOOP) ? 1 : 0);
 
     while (1) {
-
-        /* Post a read to catch any inbound transaction. */
         spi_slave_read(spi, &spi_cfg, &rx_data);
 
-        printk("Received: %02X\n", rx_data);
-        
         if (rx_data == 0x1234) {
             spi_slave_write(spi, &spi_cfg, &tx_data);
         }
+        printk("Received: 0x%04X -- %s\n", rx_data,
+               (rx_data == 0x1234) ? "ok" : "wrong"); 
     }
 }
