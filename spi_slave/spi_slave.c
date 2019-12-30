@@ -6,7 +6,7 @@
 #include <string.h>
 #include <errno.h>
 #include <zephyr.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 #include <device.h>
 #include <spi.h>
 

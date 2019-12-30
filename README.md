@@ -12,6 +12,9 @@ Be forewarned, this is a rather complex project to setup and run. That being sai
 
 
 ## Requirements
+
+This project is built with Zephyr Version 2.1.99.
+
 This project requires elements not included in the Nordic PCA10040 kit which must be provided by the user:
 
 * Host computer or system to act as SPI Master.
